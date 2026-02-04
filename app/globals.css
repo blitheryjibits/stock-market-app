@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -160,6 +161,7 @@
   .header-wrapper {
     @apply flex justify-between items-center px-6 py-4 text-gray-500;
   }
+
   .auth-layout {
     @apply flex flex-col justify-between lg:flex-row h-screen bg-gray-900 relative overflow-hidden;
   }
