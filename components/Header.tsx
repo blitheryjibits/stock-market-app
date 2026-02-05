@@ -8,8 +8,9 @@ export const Header:() => JSX.Element = () => {
     return (
     <header className="sticky top-0 header">
         <div className="container header-wrapper">
-            <Link href="/">
-                <Image src="/assets/icons/logo.svg" alt="StockWatch Logo" width={140} height={32} className="h-8 w-auto cursor-pointer"/>
+            <Link href="/" className="flex gap-3">
+                <Image src="/assets/icons/stock-exchange-app.png" alt="StockWatch Logo" width={32} height={32} className="h-8 w-auto cursor-pointer"/>
+                <p className="text-xl font-bold text-gray-100">Market Marker</p>
             </Link>
             <nav className="hidden sm:block">
                 < NavItems />
