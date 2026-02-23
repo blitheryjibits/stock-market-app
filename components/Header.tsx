@@ -4,7 +4,7 @@ import Image from "next/image";
 import NavItems from "./NavItems";
 import UserDropdown from "./UserDropdown";
 
-export const Header:() => JSX.Element = () => {
+export const Header = ({ user }: { user: User }) => {
     return (
     <header className="sticky top-0 header">
         <div className="container header-wrapper">
@@ -15,7 +15,7 @@ export const Header:() => JSX.Element = () => {
             <nav className="hidden sm:block">
                 < NavItems />
             </nav>
-            <UserDropdown />
+            <UserDropdown user={user} />
         </div>
     </header>
     )

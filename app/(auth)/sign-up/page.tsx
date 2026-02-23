@@ -6,8 +6,13 @@ import { Button } from "@/components/ui/button";
 import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 import { useForm, SubmitHandler } from "react-hook-form";
 import FooterLink from '@/components/forms/FooterLink'
+import { signUpWithEmail } from "@/lib/actions/auth-actions";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
 const Signup = () => {
 
+    const router = useRouter();
     const {
         register,
         handleSubmit,
@@ -25,11 +30,20 @@ const Signup = () => {
         },
         mode: 'onBlur',
     }, );
+
     const onSubmit: SubmitHandler<SignUpFormData> = async (data: SignUpFormData) => {
         try {
-            console.log(data);
+            const result = await signUpWithEmail(data);
+            if (result.success) {
+                router.push('/');
+            }
+            
+
         } catch (error) {
             console.error("Error submitting signup form:", error);
+            toast.error("Sign up failed. Please try again.", {
+                description: error instanceof Error ? error.message : "Failed to create account"
+            });
         }
     };
 
@@ -53,7 +67,7 @@ const Signup = () => {
                     placeholder="john@example.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: "Email is required", pattern: { value: /^\w+@\w+\.\w+$/ , message: "Invalid email address" } }}
+                    validation={{ required: "Email is required", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ , message: "Invalid email address" } }}
                 />
 
                 <InputField 
