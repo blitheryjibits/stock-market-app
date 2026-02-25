@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
 import { useForm, SubmitHandler } from "react-hook-form";
 import FooterLink from '@/components/forms/FooterLink'
-import { signUpWithEmail } from "@/lib/actions/auth-actions";
+import { signUpWithEmail } from "@/lib/actions/auth.actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
