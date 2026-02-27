@@ -3,8 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import NavItems from "./NavItems";
 import UserDropdown from "./UserDropdown";
+import { searchStocks } from "@/lib/actions/finnhub.actions";
 
-export const Header = ({ user }: { user: User }) => {
+export const Header = async ({ user }: { user: User }) => {
+
+    const initialStocks = await searchStocks();
+
     return (
     <header className="sticky top-0 header">
         <div className="container header-wrapper">
@@ -13,9 +17,9 @@ export const Header = ({ user }: { user: User }) => {
                 <p className="text-xl font-bold text-gray-100">Market Marker</p>
             </Link>
             <nav className="hidden sm:block">
-                < NavItems />
+                < NavItems initialStocks={initialStocks}/>
             </nav>
-            <UserDropdown user={user} />
+            <UserDropdown user={user} initialStocks={initialStocks}/>
         </div>
     </header>
     )
