@@ -1,18 +1,18 @@
-'use client'
+'use client';
+
+import {useForm} from "react-hook-form";
+import {Button} from "@/components/ui/button";
 import InputField from "@/components/forms/InputField";
 import SelectField from "@/components/forms/SelectField";
-import { CountrySelectField } from "@/components/forms/CountrySelectField";
-import { Button } from "@/components/ui/button";
-import { INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS } from "@/lib/constants";
-import { useForm, SubmitHandler } from "react-hook-form";
-import FooterLink from '@/components/forms/FooterLink'
-import { signUpWithEmail } from "@/lib/actions/auth.actions";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import {INVESTMENT_GOALS, PREFERRED_INDUSTRIES, RISK_TOLERANCE_OPTIONS} from "@/lib/constants";
+import {CountrySelectField} from "@/components/forms/CountrySelectField";
+import FooterLink from "@/components/forms/FooterLink";
+import {signUpWithEmail} from "@/lib/actions/auth.actions";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 
-const Signup = () => {
-
-    const router = useRouter();
+const SignUp = () => {
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -26,61 +26,57 @@ const Signup = () => {
             country: 'US',
             investmentGoals: 'Growth',
             riskTolerance: 'Medium',
-            preferredIndustry: 'Technology',
+            preferredIndustry: 'Technology'
         },
-        mode: 'onBlur',
+        mode: 'onBlur'
     }, );
 
-    const onSubmit: SubmitHandler<SignUpFormData> = async (data: SignUpFormData) => {
+    const onSubmit = async (data: SignUpFormData) => {
         try {
             const result = await signUpWithEmail(data);
-            if (result.success) {
-                router.push('/');
-            }
-            
-
-        } catch (error) {
-            console.error("Error submitting signup form:", error);
-            toast.error("Sign up failed. Please try again.", {
-                description: error instanceof Error ? error.message : "Failed to create account"
-            });
+            if(result.success) router.push('/');
+        } catch (e) {
+            console.error(e);
+            toast.error('Sign up failed', {
+                description: e instanceof Error ? e.message : 'Failed to create an account.'
+            })
         }
-    };
+    }
 
     return (
         <>
             <h1 className="form-title">Sign Up & Personalize</h1>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                <InputField 
-                name="fullName"
-                label="Full Name"
-                placeholder="John Doe"
-                register={register}
-                error={errors.fullName}
-                validation={{ required: "Full Name is required", minLength: 2 }}
+                <InputField
+                    name="fullName"
+                    label="Full Name"
+                    placeholder="John Doe"
+                    register={register}
+                    error={errors.fullName}
+                    validation={{ required: 'Full name is required', minLength: 2 }}
                 />
 
-                <InputField 
+                <InputField
                     name="email"
                     label="Email"
-                    placeholder="john@example.com"
+                    placeholder="contact@jsmastery.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: "Email is required", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ , message: "Invalid email address" } }}
+                    validation={{ required: 'Email name is required', pattern: /^\w+@\w+\.\w+$/, message: 'Email address is required' }}
                 />
 
-                <InputField 
-                name="password"
-                label="password"
-                placeholder="Enter your password"
-                type={"password"}
-                register={register}
-                error={errors.password}
-                validation={{ required: "Password is required", minLength: 8 }}
+                <InputField
+                    name="password"
+                    label="Password"
+                    placeholder="Enter a strong password"
+                    type="password"
+                    register={register}
+                    error={errors.password}
+                    validation={{ required: 'Password is required', minLength: 8 }}
                 />
 
-                <CountrySelectField 
+                <CountrySelectField
                     name="country"
                     label="Country"
                     control={control}
@@ -88,18 +84,18 @@ const Signup = () => {
                     required
                 />
 
-                <SelectField 
-                    name="Investment Goals"
+                <SelectField
+                    name="investmentGoals"
                     label="Investment Goals"
-                    placeholder="Select your investment goals"
+                    placeholder="Select your investment goal"
                     options={INVESTMENT_GOALS}
                     control={control}
                     error={errors.investmentGoals}
                     required
                 />
 
-                <SelectField 
-                    name="Risk Tolerance"
+                <SelectField
+                    name="riskTolerance"
                     label="Risk Tolerance"
                     placeholder="Select your risk level"
                     options={RISK_TOLERANCE_OPTIONS}
@@ -108,8 +104,8 @@ const Signup = () => {
                     required
                 />
 
-                <SelectField 
-                    name="Preferred Industry"
+                <SelectField
+                    name="preferredIndustry"
                     label="Preferred Industry"
                     placeholder="Select your preferred industry"
                     options={PREFERRED_INDUSTRIES}
@@ -119,14 +115,12 @@ const Signup = () => {
                 />
 
                 <Button type="submit" disabled={isSubmitting} className="yellow-btn w-full mt-5">
-                    {isSubmitting ? "Signing Up..." : "Start Investing"}
+                    {isSubmitting ? 'Creating Account' : 'Start Your Investing Journey'}
                 </Button>
 
                 <FooterLink text="Already have an account?" linkText="Sign in" href="/sign-in" />
             </form>
         </>
-    );
-
+    )
 }
-
-export default Signup;
+export default SignUp;
