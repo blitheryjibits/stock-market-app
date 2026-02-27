@@ -1,10 +1,15 @@
 'use client'
-import InputField from "@/components/forms/InputField";
-import { Button } from "@/components/ui/button";
-import { useForm, SubmitHandler } from "react-hook-form";
-import FooterLink from '@/components/forms/FooterLink'
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
+import InputField from '@/components/forms/InputField';
+import FooterLink from '@/components/forms/FooterLink';
+import {signInWithEmail} from "@/lib/actions/auth.actions";
+import {toast} from "sonner";
+import {useRouter} from "next/navigation";
 
 const Signin = () => {
+
+    const router = useRouter();
 
     const {
         register,
@@ -18,17 +23,21 @@ const Signin = () => {
         mode: 'onBlur',
     });
 
-    const onSubmit: SubmitHandler<SignInFormData> = async (data: SignInFormData) => {
+    const onSubmit = async (data: SignInFormData) => {
         try {
-            console.log('Sign in data:', data);
-        } catch (error) {
-            console.error("Error submitting sign-in form:", error);
+            const result = await signInWithEmail(data);
+            if(result.success) router.push('/');
+        } catch (e) {
+            console.error(e);
+            toast.error('Sign in failed', {
+                description: e instanceof Error ? e.message : 'Failed to sign in.'
+            })
         }
-    };
+    }
 
     return (
         <>
-            <h1 className="form-title">Sign In</h1>
+            <h1 className="form-title">Welcome back</h1>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 <InputField 
@@ -37,7 +46,7 @@ const Signin = () => {
                     placeholder="john@example.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: "Email is required", pattern: { value: /^\w+@\w+\.\w+$/, message: "Invalid email address" } }}
+                    validation={{ required: "Email is required", pattern: { value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/, message: "Invalid email address" } }}
                 />
 
                 <InputField 
