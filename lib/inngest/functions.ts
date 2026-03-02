@@ -7,49 +7,82 @@ import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
 import { getNews } from "@/lib/actions/finnhub.actions";
 import { getFormattedTodayDate } from "@/lib/utils";
 
+
+
 export const sendSignUpEmail = inngest.createFunction(
-    { id: 'sign-up-email' },
-    { event: 'app/user.created' },
-    async ({ event, step }) => {
-        const userProfile = `
-            - Country: ${event.data.country}
-            - Investment goals: ${event.data.investmentGoals}
-            - Risk tolerance: ${event.data.riskTolerance}
-            - Preferred industry: ${event.data.preferredIndustry}
-        `
+  { id: "sign-up-email" },
+  { event: "app/user.created" },
+  async ({ event, step }) => {
+    const userProfile = `
+      - Country: ${event.data.country}
+      - Investment goals: ${event.data.investmentGoals}
+      - Risk tolerance: ${event.data.riskTolerance}
+      - Preferred industry: ${event.data.preferredIndustry}
+    `;
 
-        const prompt = PERSONALIZED_WELCOME_EMAIL_PROMPT.replace('{userProfile}', userProfile);
+    const prompt = PERSONALIZED_WELCOME_EMAIL_PROMPT.replace(
+      "{userProfile}",
+      userProfile
+    );
 
-        const response = await step.ai.infer('generate-welcome-intro', {
-            model: step.ai.models.gemini({ model: 'gemini-2.0-flash-lite'}), 
-            body: {
-                contents: [
-                    { 
-                        role: 'user', 
-                            parts:[
-                                { text: prompt }
-                            ] 
-                    }
-                ]
-            }
+    let introText: string | null = null;
+    
+    // AI GENERATION WITH FULL ERROR HANDLING
+    try {
+        // if AI generation fails, catch block runs and logs error.
+        // send email step will run regardless of success of AI.
+      const response = await step.ai.infer("generate-welcome-intro", {
+        model: step.ai.models.gemini({ model: "gemini-2.0-flash-lite" }),
+        body: {
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: prompt }],
+            },
+          ],
+        },
+      });
 
-        })
+      const part = response.candidates?.[0]?.content?.parts?.[0];
+      introText = part && "text" in part ? part.text : null;
 
-        await step.run('send-welcome-email', async () => {
-            const part = response.candidates?.[0]?.content?.parts?.[0];
-            const introText = (part && 'text' in part ? part.text : null) || `Welcome to Stocktake! We're excited to have you on board.`;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      // Correctly extract status code from all possible AI error shapes
+      const status =
+        err?.status ||
+        err?.response?.status ||
+        err?.response?.data?.error?.code ||
+        err?.error?.code ||
+        err?.code;
 
-            const { data: { email, name }} = event;
+      await step.run("log-ai-error", async () => {
+        console.log("AI error caught:", status, err?.message);
+      });
 
-            return await sendWelcomeEmail({ email, name, intro: introText });
-        })
-
-        return {
-            success: true,
-            message: "welcome email sent"
-        }        
+      // Force fallback
+      introText = null;
     }
-)
+
+    // 2. FALLBACK MESSAGE IF AI FAILED OR RETURNED EMPTY
+    if (!introText) {
+      introText = `Welcome to Stocktake! We're excited to have you on board.`;
+    }
+
+    // 3. SEND EMAIL (ALWAYS RUNS, NEVER THROWS)
+    await step.run("send-welcome-email", async () => {
+      const { email, name } = event.data;
+      return await sendWelcomeEmail({ email, name, intro: introText });
+    });
+
+    // 4. RETURN SUCCESS SO INNGEST NEVER RETRIES
+    return {
+      success: true,
+      message: "welcome email sent",
+    };
+  }
+);
+
 
 export const sendDailyNewsSummary = inngest.createFunction(
     { id: 'daily-news-summary' },
