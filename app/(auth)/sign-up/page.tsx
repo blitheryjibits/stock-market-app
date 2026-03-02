@@ -34,6 +34,7 @@ const SignUp = () => {
     const onSubmit = async (data: SignUpFormData) => {
         try {
             const result = await signUpWithEmail(data);
+            console.log('data from onSubmit in signup form submission: ' + data)
             if(result.success) router.push('/');
         } catch (e) {
             console.error(e);
@@ -63,7 +64,7 @@ const SignUp = () => {
                     placeholder="contact@jsmastery.com"
                     register={register}
                     error={errors.email}
-                    validation={{ required: 'Email name is required', pattern: /^\w+@\w+\.\w+$/, message: 'Email address is required' }}
+                    validation={{ required: 'Email name is required', pattern: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/, message: 'Email address is required' }}
                 />
 
                 <InputField
