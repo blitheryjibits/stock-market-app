@@ -2,8 +2,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/better-auth/auth";
 import { headers } from "next/headers";
 import { getFullWatchlist } from "@/lib/actions/watchlist.actions";
-import { getStockQuotes } from "@/lib/actions/finnhub.actions";
+import { getStockQuotes, searchStocks } from "@/lib/actions/finnhub.actions";
 import WatchlistList from "@/components/WatchlistList";
+import SearchCommand from "@/components/SearchCommand";
 
 // interface WatchlistPageProps {
 
@@ -25,23 +26,25 @@ export default async function WatchlistPage() {
 
   const email = session.user.email;
 
+  // Fetch initial stocks for SearchCommand
+  const initialStocks = await searchStocks();
+
   // Fetch full watchlist items
   const watchlistItems = await getFullWatchlist(email);
 
   if (!watchlistItems || watchlistItems.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
+        <div className="flex flex-col text-center items-center">
           <h1 className="text-3xl font-bold mb-2">Your watchlist is empty</h1>
           <p className="text-gray-400 mb-6">
             Search for a stock and add it to get started.
           </p>
-          <a
-            href="/search"
-            className="inline-block px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Search for Stocks
-          </a>
+          <SearchCommand
+            renderAs="button"
+            label="Add First Stock"
+            initialStocks={initialStocks}
+          />
         </div>
       </div>
     );
