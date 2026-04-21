@@ -34,7 +34,7 @@ export default async function WatchlistPage() {
 
   if (!watchlistItems || watchlistItems.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-100">
         <div className="flex flex-col text-center items-center">
           <h1 className="text-3xl font-bold mb-2">Your watchlist is empty</h1>
           <p className="text-gray-400 mb-6">
