@@ -4,6 +4,11 @@ import { auth } from "@/lib/better-auth/auth";
 import { inngest } from "@/lib/inngest/client";
 import { headers } from "next/headers";
 
+export async function generateAvatarUrl(name: string) {
+  const letter = encodeURIComponent(name?.charAt(0)?.toUpperCase() || "U");
+  return `https://res.cloudinary.com/<your_cloud_name>/image/upload/w_256,h_256,c_fill,r_max,b_rgb:4F46E5,co_rgb:FFFFFF,l_text:Arial_140_b:${letter}/avatar.png`;
+}
+
 export const signUpWithEmail = async ({
   email,
   password,
@@ -14,8 +19,9 @@ export const signUpWithEmail = async ({
   preferredIndustry,
 }: SignUpFormData) => {
   try {
+    const avatarUrl = await generateAvatarUrl(fullName);
     const response = await auth.api.signUpEmail({
-      body: { email, password, name: fullName },
+      body: { email, password, name: fullName, image: avatarUrl },
     });
 
     if (response) {
