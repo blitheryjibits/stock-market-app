@@ -24,6 +24,7 @@
 .DS_Store
 *.pem
 todo
+print_file_structure.mjs
 
 # debug
 npm-debug.log*
