@@ -15,7 +15,7 @@ export const Header = async ({ user }: { user: User }) => {
         <Link href="/" className="flex gap-3">
           <Image
             src="/assets/icons/stock-exchange-app.png"
-            alt="StockWatch Logo"
+            alt="Market Marker Logo"
             width={32}
             height={32}
             className="h-8 w-auto cursor-pointer"

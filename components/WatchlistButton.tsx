@@ -98,6 +98,7 @@ const WatchlistButton = ({
   if (type === "icon") {
     return (
       <button
+        type="button"
         title={
           added
             ? `Remove ${symbol} from watchlist`
@@ -120,6 +121,7 @@ const WatchlistButton = ({
           strokeWidth="1.5"
           className="watchlist-star"
         >
+          <title>star</title>
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -132,6 +134,7 @@ const WatchlistButton = ({
 
   return (
     <button
+      type="button"
       onClick={handleWatchlistToggle}
       disabled={isMutating || loading}
       className={`watchlist-btn ${added ? "watchlist-remove" : ""}`}
@@ -145,6 +148,7 @@ const WatchlistButton = ({
           stroke="currentColor"
           className="w-5 h-5 mr-2"
         >
+          <title>trash icon</title>
           <path
             strokeLinecap="round"
             strokeLinejoin="round"

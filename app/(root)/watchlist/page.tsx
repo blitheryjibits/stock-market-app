@@ -6,10 +6,6 @@ import { getStockQuotes, searchStocks } from "@/lib/actions/finnhub.actions";
 import WatchlistList from "@/components/WatchlistList";
 import SearchCommand from "@/components/SearchCommand";
 
-// interface WatchlistPageProps {
-
-// }
-
 export const metadata = {
   title: "My Watchlist",
   description: "View and manage your stock watchlist",

@@ -117,7 +117,7 @@ export default function WatchlistList({
             {/* Remove Button */}
             <div
               className="col-span-12 md:col-span-2 flex items-center justify-end"
-              onClick={(e) => e.preventDefault()}
+              // onClick={(e) => e.preventDefault()}
             >
               <Button
                 onClick={(e) => handleRemove(e, item.symbol)}

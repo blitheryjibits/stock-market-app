@@ -11,7 +11,7 @@ const Layout: ({ children }: { children: React.ReactNode }) => JSX.Element = ({
         <Link href="/" className="auth-logo flex gap-3">
           <Image
             src="/assets/icons/stock-exchange-app.png"
-            alt="StockWatch Logo"
+            alt="Market Marker Logo"
             width={32}
             height={32}
             className="h-8 w-auto cursor-pointer"
