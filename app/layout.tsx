@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StockWatch",
+  title: "Market Marker",
   description:
-    "A real-time stock market dashboard for tracking stock prices, creating personalised portfolios, and exploring detailed company information. Built with Next.js and Tailwind CSS.",
+    "A real-time stock market dashboard for tracking stock prices, creating personalised portfolios, and exploring detailed company information.",
 };
 
 export default function RootLayout({

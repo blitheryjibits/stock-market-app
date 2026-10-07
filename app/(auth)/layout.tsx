@@ -1,7 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import type { JSX } from "react";
 
-import { JSX } from "react";
 const Layout: ({ children }: { children: React.ReactNode }) => JSX.Element = ({
   children,
 }) => {
@@ -25,7 +25,7 @@ const Layout: ({ children }: { children: React.ReactNode }) => JSX.Element = ({
       <section className="auth-right-section">
         <div className="z-10 relative lg:mt-4 lg:mb-16">
           <blockquote className="auth-blockquote">
-            Market Maker turned my trading around. The insights and real-time
+            Market Marker turned my trading around. The insights and real-time
             data helped me make smarter decisions and boost my profits.
           </blockquote>
           <div className="flex flex-center justify-between">
